@@ -31,4 +31,6 @@ to this : <br />
 In gamma.py you will find :
  
 **Gamma Correction**->GUI for gamma correction with trackBar from(• OpenCV trackbar example and • Gamma Correction Wikipedia)
+<br />
+<img width="595" alt="Screenshot 2023-04-19 at 16 57 32" src="https://user-images.githubusercontent.com/58401645/233114216-ed5811ca-6383-468d-8929-a14f6da67bdd.png">
 
