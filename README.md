@@ -4,13 +4,9 @@ Image Processing and Computer Vision Course Assignment 1
                                                
 In ex1.utils.py you will find an image processing like:
 
-**Reading an image into a given representation** ->
+**Reading an image into a given representation** ->repressentation of RGB or Gray Scale image.
 
-repressentation of RGB or Gray Scale image
 the mathods imReadAndConvert() and imDisplay() using Opencv2
-
-
-**Displaying an image** -> Reads an image as RGB or GRAY_SCALE and displays it
 
 **Transforming an RGB image to YIQ color space**-> 
 
