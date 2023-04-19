@@ -100,47 +100,40 @@ def hsitogramEqualize(imgOrig: np.ndarray) -> (np.ndarray, np.ndarray, np.ndarra
         :param imgOrig: Original Histogram
         :ret
     """
-    # from range [0,1] to [0,255]
-    img = cv2.normalize(imgOrig, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F)
-    img = (np.around(img)).astype('uint8')  # make sure its integers
-    # original histogram
-    histOrg = calHist(img)
-    # cumsum
-    cum_sum = histOrg.cumsum()
+    is_rgb = False
+    # RGB image procedure should only operate on the Y chanel
+    if len(imgOrig.shape) == 3:
+        is_rgb = True
+        yiq_image = transformRGB2YIQ(np.copy(imgOrig))
+        imgOrig = yiq_image[:, :, 0]
+        # change range grayscale or RGB image to be equalized having values in the range [0, 1]
+    imgOrig = cv2.normalize(imgOrig, None, 0, 255, cv2.NORM_MINMAX)
+    imgOrig = imgOrig.astype('uint8')
+    # the histogram of the original image
+    histOrg = np.histogram(imgOrig.flatten(), 256)[0]
+    # Calculate the normalized Cumulative Sum (CumSum)
+    cumsum = np.cumsum(histOrg)
+    # Create a LookUpTable(LUT)
+    LUT = np.floor((cumsum / cumsum.max()) * 255)
+    # Replace each intesity i with LUT[i] and Return an array of zeros with the same shape and type as a given array.
+    imEq = np.zeros_like(imgOrig, dtype=float)
+    for x in range(256):
+        imEq[imgOrig == x] = int(LUT[x])
+    # Calculate the new image histogram (range = [0, 255])
+    histEQ = np.zeros(256)
+    for val in range(256):
+        # Counts the number of non-zero values in the array.
+        histEQ[val] = np.count_nonzero(imEq == val)
 
-    lut = np.zeros(256)
-    norm_cumSum = cum_sum / cum_sum.max()  # normalize each value of cumsum
-    # create look up table
-    for i in range(len(norm_cumSum)):
-        new_color = int(np.floor(norm_cumSum[i] * 255))
-        lut[i] = new_color
+    # norm imgEQ from range [0, 255] to range [0, 1]
+    imEq = imEq / 255.0
 
-    imgEq = np.zeros_like(imgOrig, dtype=float)
-    # Replace each intesity i with lut[i]
-    for old_color, new_color in enumerate(lut):
-        imgEq[img == old_color] = new_color
+    if is_rgb:
+        # If an RGB image is given the following equalization procedure should only operate on the Y channel of the corresponding YIQ image and then convert back from YIQ to RGB.
+        yiq_image[:, :, 0] = imEq / (imEq.max() - imEq.min())
+        imEq = transformYIQ2RGB(np.copy(yiq_image))
+    return imEq, histOrg, histEQ
 
-    # histogramEqualize
-    histEQ = calHist(imgEq)
-    # norm from range [0, 255] back to [0, 1]
-    imgEq = imgEq / 255.0
-    return imgEq, histOrg, histEQ
-
-def calHist(img: np.ndarray) -> np.ndarray:  # My function to crate a Histogram
-    hist = np.zeros(256)
-    for pix in range(256):
-        hist[pix] = np.count_nonzero(img == pix)
-
-    return hist
-
-
-def calcBoundaries(k: int):
-    z = np.zeros(k + 1, dtype=int)
-    size = 256 / k
-    for i in range(1, k):  # first boundary 0
-        z[i] = z[i - 1] + size
-    z[k] = 255  # last boundary 255
-    return z
 
 def quantizeImage(imOrig: np.ndarray, nQuant: int, nIter: int) -> (List[np.ndarray], List[float]):
     """
@@ -165,6 +158,14 @@ def quantizeImage(imOrig: np.ndarray, nQuant: int, nIter: int) -> (List[np.ndarr
 
     return q_img_lst, MSE_error_list
 
+
+def calcBoundaries(k: int):
+    z = np.zeros(k + 1, dtype=int)
+    size = 256 / k
+    for i in range(1, k):  # first boundary 0
+        z[i] = z[i - 1] + size
+    z[k] = 255  # last boundary 255
+    return z
 
 def quantize_chanel(imOrig: np.ndarray, nQuant: int, nIter: int) -> (List[np.ndarray], List[float]):
     # return list:
