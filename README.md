@@ -2,9 +2,12 @@
 Image Processing and Computer Vision Course Assignment 1
 **Written in Python on PyCharm workspace** ![22](https://user-images.githubusercontent.com/73976733/104122372-55ae3700-534d-11eb-8de4-492973fca972.jpeg)
                                                
-In this assignment the following tasks were implemented using Python and the OpenCV library:
+In ex1.utils.py you will find an image processing like:
 
-**Reading an image into a given representation** -> Reads an image, and returns the image converted as requested
+**Reading an image into a given representation** ->
+
+repressentation of RGB or Gray Scale image
+the mathods imReadAndConvert() and imDisplay() using Opencv2
 
 
 **Displaying an image** -> Reads an image as RGB or GRAY_SCALE and displays it
