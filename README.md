@@ -22,6 +22,13 @@ the method hsitogramEqualize() - algorithm that calculate the cumsum of the imag
 **Optimal image quantization**-> Quantized an image in to **nQuant** colors. <br />
 the method quantizeImage() - create a new image with input number of colors  
  from this image: <br />
+ <img width="573" alt="Screenshot 2023-04-19 at 16 50 55" src="https://user-images.githubusercontent.com/58401645/233112582-9758293b-2fde-40cf-8ca4-b19bec8439fd.png">
+
+to this : <br />
+<img width="551" alt="Screenshot 2023-04-19 at 16 51 54" src="https://user-images.githubusercontent.com/58401645/233112821-f772e5e5-1cd2-4f3d-bc76-31880b003c25.png">
+
+
+In gamma.py you will find :
  
 **Gamma Correction**->GUI for gamma correction with trackBar from(• OpenCV trackbar example and • Gamma Correction Wikipedia)
 
