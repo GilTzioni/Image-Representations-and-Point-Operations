@@ -17,3 +17,4 @@ In this assignment the following tasks were implemented using Python and the Ope
 **Optimal image quantization**-> Quantized an image in to **nQuant** colors
 
 **Gamma Correction**->GUI for gamma correction with trackBar from(• OpenCV trackbar example and • Gamma Correction Wikipedia)
+<img width="575" alt="Screenshot 2023-04-19 at 16 49 51" src="https://user-images.githubusercontent.com/58401645/233099251-64a26bba-1153-46a1-b828-0ebfd46a4ac0.png">
